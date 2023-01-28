@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: mwdb
+  name: mwdb
+spec:
+  ports:
+    - name: "80"
+      port: 80
+      targetPort: 3000
+  selector:
+    app: mwdb
+  type: LoadBalancer
+status:
+  loadBalancer: {}

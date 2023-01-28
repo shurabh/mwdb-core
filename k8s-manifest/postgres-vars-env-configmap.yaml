@@ -1,0 +1,11 @@
+apiVersion: v1
+data:
+  POSTGRES_DB: mwdb
+  POSTGRES_PASSWORD: 311aa73a50f60d0895b15e5d3ee4e57a4cf6
+  POSTGRES_USER: mwdb
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: postgres-postgres-vars-env
+  name: postgres-vars-env

@@ -1,0 +1,19 @@
+apiVersion: v1
+data:
+  MWDB_REDIS_URI: redis://redis/
+  MWDB_POSTGRES_URI: postgresql://mwdb:311aa73a50f60d0895b15e5d3ee4e57a4cf6@postgres-mwdb/mwdb
+  MWDB_SECRET_KEY: 567a554d69e7b73fdf8ae51bd96ccaedf9de
+  MWDB_ADMIN_LOGIN: admin
+  MWDB_ADMIN_EMAIL: admin@localhost
+  MWDB_ADMIN_PASSWORD: admin
+  MWDB_BASE_URL: http://192.168.29.213/
+  MWDB_ENABLE_RATE_LIMIT: "1"
+  MWDB_ENABLE_REGISTRATION: "1"
+  UWSGI_PROCESSES: "4"
+  MWDB_ENABLE_OIDC: "1"
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    app: mwdb-mwdb-vars-env
+  name: mwdb-vars-env

@@ -1,0 +1,120 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mwdb
+  name: mwdb
+spec:
+  selector:
+    matchLabels:
+      app: mwdb
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mwdb
+    spec:    
+      containers:
+      - env:
+        - name: GET_HOSTS_FROM
+          value: dns
+        - name: MWDB_ADMIN_EMAIL
+          valueFrom:
+            configMapKeyRef:
+              key: MWDB_ADMIN_EMAIL
+              name: mwdb-vars-env
+        - name: MWDB_ADMIN_LOGIN
+          valueFrom:
+            configMapKeyRef:
+              key: MWDB_ADMIN_LOGIN
+              name: mwdb-vars-env
+        - name: MWDB_ADMIN_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              key: MWDB_ADMIN_PASSWORD
+              name: mwdb-vars-env
+        - name: MWDB_BASE_URL
+          valueFrom:
+            configMapKeyRef:
+              key: MWDB_BASE_URL
+              name: mwdb-vars-env
+        - name: MWDB_ENABLE_OIDC
+          valueFrom:
+            configMapKeyRef:
+              key: MWDB_ENABLE_OIDC 
+              name: mwdb-vars-env
+        - name: MWDB_ENABLE_RATE_LIMIT
+          valueFrom:
+            configMapKeyRef:
+              key: MWDB_ENABLE_RATE_LIMIT
+              name: mwdb-vars-env
+        - name: MWDB_ENABLE_REGISTRATION
+          valueFrom:
+            configMapKeyRef:
+              key: MWDB_ENABLE_REGISTRATION
+              name: mwdb-vars-env
+        - name: MWDB_MAIL_FROM
+          value: noreply@mwdb.dev
+        - name: MWDB_MAIL_SMTP
+          value: mailhog:1025
+        - name: MWDB_POSTGRES_URI
+          valueFrom:
+            configMapKeyRef:
+              key: MWDB_POSTGRES_URI
+              name: mwdb-vars-env
+        - name: MWDB_RECAPTCHA_SECRET
+          value: 6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe
+        - name: MWDB_RECAPTCHA_SITE_KEY
+          value: 6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI
+        - name: MWDB_REDIS_URI
+          valueFrom:
+            configMapKeyRef:
+              key: MWDB_REDIS_URI
+              name: mwdb-vars-env
+        - name: MWDB_SECRET_KEY
+          valueFrom:
+            configMapKeyRef:
+              key: MWDB_SECRET_KEY
+              name: mwdb-vars-env
+        - name: UWSGI_ENABLE_THREADS
+          value: "1"
+        - name: UWSGI_PROCESSES
+          valueFrom:
+            configMapKeyRef:
+              key: UWSGI_PROCESSES
+              name: mwdb-vars-env
+        - name: UWSGI_PY_AUTORELOAD
+          value: "1"
+        image: localhost:32000/mwdb:registry
+        resources:
+          requests:
+            memory: "500Mi"
+            cpu: "500m"
+          limits:
+            memory: "800Mi"
+            cpu: "700m"
+        name: mwdb
+        ports:
+        - containerPort: 8080
+      - env:
+        - name: GET_HOSTS_FROM
+          value: dns
+        - name: HOST
+          value: 0.0.0.0
+        - name: REACT_APP_API_URL
+          value: /api/
+        - name: PROXY_BACKEND_URL
+          value: http://0.0.0.0:8080
+          #image: localhost:32000/mwdb-web:registry
+        image: localhost:32000/mwdb-web:registry
+        resources:
+          requests:
+            memory: "1200Mi"
+            cpu: "500m"
+          limits:
+            memory: "1300Mi"
+            cpu: "500m"        
+        name: mwdb-web
+        ports:
+        - containerPort: 3000        
+      restartPolicy: Always

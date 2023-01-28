@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: postgres-mwdb
+  name: postgres-mwdb
+spec:
+        #externalTrafficPolicy: Cluster
+  ports:
+  - port: 5432
+    protocol: TCP
+    targetPort: 5432
+  selector:
+    app: postgres-mwdb
+  sessionAffinity: None
+  #type: NodePort
